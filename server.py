@@ -9,14 +9,20 @@ else:
     from BaseHTTPServer import HTTPServer
 import digit
 import json
+import pndigit
+import numpy as np
 
-net = digit.loadNet("net90-2.net")
+net = pndigit.buildNet()
 
 class DigitHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         postvars = self.parse_POST()
         pixels = postvars['pixels[]']
-        print(net.activate(pixels))
+        features = []
+        features.append(np.array(pixels))
+        features = np.array(features)
+        print(net.predict_label(features)[0])
+
 
     def parse_POST(self):
         ctype, pdict = parse_header(self.headers.getheader('content-type'))

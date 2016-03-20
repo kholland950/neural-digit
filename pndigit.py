@@ -5,18 +5,18 @@ import pickle
 
 
 def buildNet():
-    net = pyneural.NeuralNet([784, 100, 10])
+    net = pyneural.NeuralNet([784, 200, 10])
     ims, labels = getDataSet()
-    net.train(ims, labels, 30, 10, 0.01, 0.0, 1.0)
+    net.train(ims, labels, 50, 10, 0.01, 0.0, 1.0)
     return net
 
 def loadNet(fname):
     f = open(fname, "rb")
     data = pickle.load(f)
     params = data['params']
-    net = pyneural.NeuralNet([784, 100, 10])
-    net.set_params(params)
-    return net
+    newNet = pyneural.NeuralNet([784, 100, 10])
+    newNet.set_params(params)
+    return newNet
 
 def writeNet(fname, net):
     f = open(fname, "wb")
@@ -44,8 +44,8 @@ def vectorize_labels(labels):
     vectorized = []
     
     for label in labels:
-        vector = [0.1] * 10 #list of 10 zeros
-        vector[label] = 0.9
+        vector = [0.01] * 10 #list of 10 zeros
+        vector[label] = 0.99
         vectorized.append(vector)
 
     return vectorized
