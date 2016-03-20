@@ -7,12 +7,11 @@ else:
     from urlparse import parse_qs
     from BaseHTTPServer import BaseHTTPRequestHandler
     from BaseHTTPServer import HTTPServer
-import digit
 import json
 import pndigit
 import numpy as np
 
-net = pndigit.buildNet()
+net = pndigit.loadNet("final.net")
 
 class DigitHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -21,8 +20,13 @@ class DigitHandler(BaseHTTPRequestHandler):
         features = []
         features.append(np.array(pixels))
         features = np.array(features)
-        print(net.predict_label(features)[0])
-
+        val = net.predict_label(features)[0]
+        print(val)
+        self.send_response(200)
+        self.send_header("Content-type","text/plain")
+        self.send_header("Access-Control-Allow-Origin","*");
+        self.end_headers()
+        self.wfile.write(val)
 
     def parse_POST(self):
         ctype, pdict = parse_header(self.headers.getheader('content-type'))

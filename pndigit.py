@@ -3,18 +3,22 @@ import numpy as np
 from loader import MNIST
 import pickle
 
+n_input = 784
+n_hidden = 200
+n_output = 10
+epochs = 50
 
 def buildNet():
-    net = pyneural.NeuralNet([784, 200, 10])
+    net = pyneural.NeuralNet([n_input, n_hidden, n_output])
     ims, labels = getDataSet()
-    net.train(ims, labels, 50, 10, 0.01, 0.0, 1.0)
+    net.train(ims, labels, epochs, 10, 0.01, 0.0, 1.0)
     return net
 
 def loadNet(fname):
     f = open(fname, "rb")
     data = pickle.load(f)
     params = data['params']
-    newNet = pyneural.NeuralNet([784, 100, 10])
+    newNet = pyneural.NeuralNet([n_input, n_hidden, n_output])
     newNet.set_params(params)
     return newNet
 
